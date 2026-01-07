@@ -231,11 +231,7 @@ class Spawn(pygame.sprite.Sprite): # спрайт спавна наших юни
 
 
 def cret_new_game():
-
-    
     global MAPS, VARIABLE,  all_sprites_map, WAVE, VOLUME_TURRENT, VOLUME_WINDOW, GAME_ZOMBIE, OPT, MAX_TURRENT, MAX_WINDOW, VICTORY
-
-
 
     VARIABLE = { # словарь с игровыми переменными 
             # что мы будем ставить
@@ -260,7 +256,7 @@ def cret_new_game():
             all_sprites_map.add(map)
 
 
-
+    
 
     VOLUME_TURRENT = 0 # кол-во турелей
     VOLUME_WINDOW = 0 # кол-во окон
@@ -272,7 +268,7 @@ def cret_new_game():
     # создаём новые группы спрайтов
     global  all_sprites_bullet
     global  all_sprites_spawn, all_sprites_window, all_sprites_zobies, all_sprites_turent
-
+    
 
     all_sprites_window = pygame.sprite.Group()
 
@@ -281,12 +277,17 @@ def cret_new_game():
     all_sprites_zobies = pygame.sprite.Group() # зомби
     all_sprites_bullet = pygame.sprite.Group() # снаряды
     all_sprites_turent = pygame.sprite.Group() # турели 
+    
     global spawn
+    
     spawn = Spawn(5000)
     all_sprites_spawn.add(spawn)
+    
     z = Zombie_1(GRID, DATA, IMAGE)
-    all_sprites_zobies.add(z)
 
+    all_sprites_zobies.add(z)
+    
+cret_new_game()     #? вызываем, чтобы потом с первого раза начиналась игра
 
 def help(): 
 
@@ -355,11 +356,12 @@ surf_m = pygame.Surface((WIDTH, HEIGHT))
 
 # кнопки в главном меню с текстом
 def run_game(level): 
-    
-    cret_new_game() # создаём поле
     global game, LEVEL
-    game = True
     LEVEL = level
+    cret_new_game() # создаём поле
+    
+    game = True
+    
 
 btn_1_menu = Button_1(WIDTH//2, HEIGHT//2 ,WIDTH//9 , HEIGHT//13 ,obj_btn_2,"бесконечность", lambda: (run_game(0)), 27);   obj_btn_2 = btn_1_menu.loading_lis()    # ЗАБИРАЕМ СПИСОК
 # кнопки в главном меню с текстом
@@ -557,7 +559,10 @@ while running:
         if setting_open == True:
             surfersetting.process(event)
             setting_open = surfersetting.is_exit_pressed()
-
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                level_open = False
+                setting_open = False
 
         if pygame.mouse.get_pressed()[0] and game == True:
             if (VOLUME_TURRENT < MAX_TURRENT or VOLUME_WINDOW < MAX_WINDOW):#TODO c каждой волной повышаем допустимое значение
@@ -618,6 +623,9 @@ while running:
             
             if keys[pygame.K_ESCAPE]: lbl = 0; OPT = 0; OPTCURSOR = "" #заменяем переменную
 
+            if keys[pygame.K_1]: OPT = 1    #hotkeys for control 
+            if keys[pygame.K_2]: OPT = 2
+
             if str(all_sprites_zobies) == "<Group(0 sprites)>": 
                 all_sprites_zobies = Create_zombie.new_WAVE(all_sprites_zobies)
                 WAVE += 1
@@ -668,11 +676,11 @@ while running:
 
         screen.blit(surf, (0, HEIGHT- 90))
         if VARIABLE["menu_game_1"]:
-            for object in obj_btn_1:  object.process()
+            for object in obj_btn_1:  object.process(screen)
 
         # обнолвляем и выводим кнопки в одном месте
         all_sprites_menu_game.draw(screen)
-        all_sprites_menu_game.update()
+        all_sprites_menu_game.update(screen)
         if VARIABLE["menu_game_2"]:
             all_sprites_decoration_btn.draw(screen)
             all_sprites_decoration_btn.update()

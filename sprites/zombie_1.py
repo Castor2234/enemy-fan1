@@ -7,7 +7,7 @@ class BaseZombie(pygame.sprite.Sprite):
     
     def __init__(self, size, color, speed, health, animations = None):
         super().__init__()
-        from main import WIDTH, Zom_x, Zom_y, HEIGHT
+        from main import WIDTH, Zom_x, Zom_y, GAME_HEIGHT
         
         # Оптимизация: используем словарь анимаций
         self.animations = animations  
@@ -38,11 +38,11 @@ class BaseZombie(pygame.sprite.Sprite):
             self.rect.y = random.randint(-200, -50)
         elif side == 1:  # Право
             self.rect.x = random.randint(WIDTH + 10, WIDTH + 100)
-            self.rect.y = random.randint(-50, int(HEIGHT//1.5))
+            self.rect.y = random.randint(-50, int(GAME_HEIGHT//1.5))
 
         else:  # Лево
             self.rect.x = random.randint(-100, -10)
-            self.rect.y = random.randint(-50, int(HEIGHT//1.5))
+            self.rect.y = random.randint(-50, int(GAME_HEIGHT//1.5))
         self.x = self.rect.x
         self.y = self.rect.y
 
