@@ -1,4 +1,4 @@
-import json, toml, sys
+import json, toml, sys, time
 
 class Data:
     def __init__(self):
@@ -11,10 +11,11 @@ class Data:
     
     def loading_config(self):
         try:
-            with open('./data/conig.toml', 'r', encoding='utf-8') as f:  
+            with open('./data/config.toml', 'r', encoding='utf-8') as f:
                 return toml.load(f)  
         except:
             print('data.py class Data: Error open or read config.toml. Stopping the program.')
+            time.sleep(5)
             sys.exit()
 
     def loading_setting(self):
